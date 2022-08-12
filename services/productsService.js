@@ -1,5 +1,7 @@
 const products = require('../models/productsModel');
 
+const validateInfo = require('../helpers/validateInfo');
+
 const getAll = async () => {
   const result = await products.getAll();
   // console.log(result);
@@ -15,7 +17,17 @@ const findById = async (id) => {
   return { code: 200, data: result };
 };
 
+async function createProduct(params) {
+  const nameIsValid = validateInfo.validateName(params, validateInfo.schemaProductsName);
+  if (nameIsValid) return { code: 404, message: nameIsValid };
+  
+  const result = await products.createProduct(params);
+  if (!result.id) return { code: 500, message: 'erro interno' };
+  return { code: 201, data: result };
+}
+  
 module.exports = {
   getAll,
   findById,
+  createProduct,
 };
