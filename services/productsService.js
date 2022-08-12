@@ -19,7 +19,7 @@ const findById = async (id) => {
 
 async function createProduct(params) {
   const nameIsValid = validateInfo.validateName(params, validateInfo.schemaProductsName);
-  if (nameIsValid) return { code: 404, message: nameIsValid };
+  if (nameIsValid.code) return { code: nameIsValid.code, message: nameIsValid.message };
   
   const result = await products.createProduct(params);
   if (!result.id) return { code: 500, message: 'erro interno' };

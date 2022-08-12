@@ -3,13 +3,16 @@ const app = require('./app');
 require('dotenv').config();
 
 // não altere esse arquivo, essa estrutura é necessária para à avaliação do projeto
-const products = require('./controllers/productsController');
+const productsController = require('./controllers/productsController');
+const salesController = require('./controllers/salesController');
 
-app.get('/products', products.getAll);
+app.get('/products', productsController.getAll);
 
-app.get('/products/:id', products.findById);
+app.get('/products/:id', productsController.findById);
 
-app.post('/products', products.createProduct);
+app.post('/products', productsController.createProduct);
+
+app.post('/sales', salesController.createSales);
 
 app.listen(process.env.PORT, () => {
   console.log(`Escutando na porta ${process.env.PORT}`);
