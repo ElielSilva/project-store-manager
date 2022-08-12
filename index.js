@@ -12,6 +12,10 @@ app.get('/products/:id', productsController.findById);
 
 app.post('/products', productsController.createProduct);
 
+app.put('/products/:id', productsController.updateById);
+
+app.delete('/products/:id', productsController.deleteById);
+
 // app.post('/sales', salesController.createSales);
 
 app.get('/sales', salesController.getAllSales);
