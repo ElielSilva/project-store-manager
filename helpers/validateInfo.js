@@ -1,4 +1,4 @@
-const { log } = require('console');
+// const { log } = require('console');
 const Joi = require('joi');
 
 const schemaProductsName = Joi.object({
