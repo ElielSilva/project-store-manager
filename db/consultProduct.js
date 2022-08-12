@@ -7,10 +7,10 @@
 
 // consultById(1);
 
-const productModel = require('../models/productsModel');
+// const productModel = require('../models/productsModel');
 
-async function consultById(id) {
-  const response = await productModel.findById(1);
-  console.log(response);
-}
-consultById(1);
+// async function consultById(id) {
+//   const response = await productModel.findById(45);
+//   console.log(response);
+// }
+// consultById(1);
