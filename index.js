@@ -12,7 +12,11 @@ app.get('/products/:id', productsController.findById);
 
 app.post('/products', productsController.createProduct);
 
-app.post('/sales', salesController.createSales);
+// app.post('/sales', salesController.createSales);
+
+app.get('/sales', salesController.getAllSales);
+
+app.get('/sales/:id', salesController.findByIdSales);
 
 app.listen(process.env.PORT, () => {
   console.log(`Escutando na porta ${process.env.PORT}`);
