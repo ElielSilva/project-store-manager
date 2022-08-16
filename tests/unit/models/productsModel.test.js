@@ -61,4 +61,12 @@ describe("Models /products", () => {
     });
   });
 
+  describe("deleteById", () => {
+    // const responseDBcreate = [{ insertId: 4 }, []];
+    it("deleta product", async () => {
+      sinon.stub(connection, "execute").resolves();
+      await productsModel.deleteById(1);
+    });
+  });
+
 });

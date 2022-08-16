@@ -1,7 +1,5 @@
 const connection = require('./connection');
 
-// Busca todas as pessoas autoras do banco.
-
 const getAll = async () => {
   const [products] = await connection.execute(
     'SELECT id, name FROM StoreManager.products;',
@@ -36,17 +34,17 @@ const updateById = async (id, body) => {
   return { id, name: body.name };
 };
 
-// const deleteById = async (id) => {
-//   await connection.execute(
-//     'DELETE FROM StoreManager.products WHERE id = ?;',
-//     [id],
-//   );
-// };
+const deleteById = async (id) => {
+  await connection.execute(
+    'DELETE FROM StoreManager.products WHERE id = ?;',
+    [id],
+  );
+};
 
 module.exports = {
   getAll,
   findById,
   createProduct,
   updateById,
-  // deleteById,
+  deleteById,
 };

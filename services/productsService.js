@@ -31,17 +31,18 @@ const updateById = async (id, body) => {
   return { code: 200, data: { ...result } };
 };
 
-// const deleteById = async (id) => {
-//   const produtExists = await findById(id);
-//   if (produtExists.code === 404) return produtExists;
-//   await productsModel.deleteById(id);
-//   return { code: 204 };
-// };
+const deleteById = async (id) => {
+  const produtExists = await findById(id);
+  // console.log(produtExists)
+  if (produtExists.code === 404) return produtExists;
+  await productsModel.deleteById(id);
+  return { code: 204 };
+};
   
 module.exports = {
   getAll,
   findById,
   createProduct,
   updateById,
-  // deleteById,
+  deleteById,
 };

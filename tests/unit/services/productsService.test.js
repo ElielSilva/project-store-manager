@@ -88,28 +88,65 @@ describe("Service /products", () => {
   });
 
   // ===============
-  // beforeEach(sinon.restore);
-  // describe("função updateById", () => {
-  //   const responseModel = { id: 1, name: "Cabelo do Neymar" };
-  //   const ERRO_400 = { code: 400, massege: '"name" is required' };
-  //   const ERRO_404 = {
-  //     code: 404,
-  //     message: "Product not found",
-  //   };
+  describe("função updateById", () => {
+    const responseModel = { id: 1, name: "Cabelo do Neymar" };
+    const ERRO_400 = { code: 400, massege: '"name" is required' };
+    const ERRO_404 = {
+      code: 404,
+      message: "Product not found",
+    };
 
-    // it("code 200 e retorno o produto", async () => {
-    //   sinon.stub(productsModel, "updateById").resolves(responseModel);
-    //   const response = await productsService.updateById(1,{
-    //     name: "Cabelo do Neymar",
-    //   });
-    //   // console.log('==================', response)
-    //   expect(response).to.have.keys("code", "data");
-    //   expect(response.code).equal(200);
-    //   expect(response.data.id).equal(1);
-    //   expect(response.data.name).equal("Cabelo do Neymar");
-    // });
+    it("code 200 e retorno o produto", async () => {
+      sinon.stub(productsModel, "updateById").resolves(responseModel);
+      const response = await productsService.updateById(1,{
+        name: "Cabelo do Neymar",
+      });
+      // console.log('==================', response)
+      expect(response).to.have.keys("code", "data");
+      expect(response.code).equal(200);
+      expect(response.data.id).equal(1);
+      expect(response.data.name).equal("Cabelo do Neymar");
+    });
+    it("code 400 em name invalido", async () => {
+       sinon.stub(productsModel, "updateById").resolves(ERRO_400);
+      const response = await productsService.updateById(1, {
+        names: "Cabelo do Neymar",
+      });
+      expect(response).to.have.keys("code", "message");
+      expect(response.code).equal(ERRO_400.code);
+      expect(response.message).equal(ERRO_400.massege);
+    });
+    it("code 404", async () => {
+      sinon.stub(productsService, "findById").resolves(ERRO_404);
+      const response = await productsService.updateById(4,{
+        name: "lapiz",
+      });
+      console.log(response)
+      expect(response).to.have.keys("code", "message");
+      expect(response.code).equal(ERRO_404.code);
+      expect(response.message).equal(ERRO_404.message);
+    });
+  });
+
+  describe("função deleteById", () => {
+    const responseModel = { id: 1, name: "Cabelo do Neymar" };
+    const ERRO_400 = { code: 400, massege: '"name" is required' };
+    const ERRO_404 = {
+      code: 404,
+      message: "Product not found",
+    };
+
+    it("code 204 e retorno o produto", async () => {
+      // sinon.stub(productsModel, "deleteById").resolves();
+      sinon.stub(productsService, "findById").resolves({code:204});
+      const response = await productsService.deleteById(1);
+      // console.log('==================', response)
+      expect(response).to.have.keys("code");
+      expect(response.code).equal(204);
+      
+    });
     // it("code 400 em name invalido", async () => {
-    //    sinon.stub(productsModel, "createProduct").resolves(ERRO_400);
+    //   sinon.stub(productsModel, "updateById").resolves(ERRO_400);
     //   const response = await productsService.updateById(1, {
     //     names: "Cabelo do Neymar",
     //   });
@@ -117,15 +154,15 @@ describe("Service /products", () => {
     //   expect(response.code).equal(ERRO_400.code);
     //   expect(response.message).equal(ERRO_400.massege);
     // });
-    // it("code 404", async () => {
-    //   sinon.stub(productsService, "findById").resolves(ERRO_404);
-    //   const response = await productsService.updateById(4,{
-    //     name: "lapiz",
-    //   });
-    //   console.log(response)
-    //   expect(response).to.have.keys("code", "message");
-    //   expect(response.code).equal(ERRO_404.code);
-    //   expect(response.message).equal(ERRO_404.message);
-    // });
-  // });
+    it("code 404", async () => {
+      sinon.stub(productsModel, "findById").resolves(ERRO_404);
+      const response = await productsService.deleteById(4);
+      console.log(response);
+      expect(response).to.have.keys("code", "message");
+      expect(response.code).equal(ERRO_404.code);
+      expect(response.message).equal(ERRO_404.message);
+    });
+  });
+
 });
+

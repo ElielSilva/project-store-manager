@@ -15,13 +15,13 @@ app.post('/products', rescue(productsController.createProduct));
 
 app.put('/products/:id', rescue(productsController.updateById));
 
-// app.delete('/products/:id', productsController.deleteById);
+app.delete('/products/:id', productsController.deleteById);
 
 // app.post('/sales', salesController.createSales);
 
-// app.get('/sales', salesController.getAllSales);
+app.get('/sales', salesController.getAllSales);
 
-// app.get('/sales/:id', salesController.findByIdSales);
+app.get('/sales/:id', salesController.findByIdSales);
 
 app.listen(process.env.PORT, () => {
   console.log(`Escutando na porta ${process.env.PORT}`);
