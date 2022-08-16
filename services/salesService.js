@@ -3,7 +3,7 @@ const salesModel = require('../models/salesModel');
 
 async function getAllSales() {
   const sales = await salesModel.getAllSales();
-  if (!sales.length) return { code: 200, message: 'error interno' };
+  if (!sales.length) return { code: 500, message: 'error interno' };
   return { code: 200, data: sales };
 }
 

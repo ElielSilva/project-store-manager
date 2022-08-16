@@ -26,6 +26,8 @@ async function findByIdSales(id) {
     WHERE id = ?;`,
     [id],
   );
+  // console.log(sales);
+
   return sales.map(serialize);
 }
 
