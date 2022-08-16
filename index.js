@@ -5,7 +5,7 @@ require('dotenv').config();
 
 // não altere esse arquivo, essa estrutura é necessária para à avaliação do projeto
 const productsController = require('./controllers/productsController');
-// const salesController = require('./controllers/salesController');
+const salesController = require('./controllers/salesController');
 
 app.get('/products', rescue(productsController.getAll));
 
