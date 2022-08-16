@@ -4,8 +4,10 @@ const { expect } = require('chai');
 const productsModel = require('../../../models/productsModel');
 const connection = require("../../../models/connection");
 
-describe("testa se ao chamar com GET /products", () => {
-  describe("testa se restorna todos os produtos", () => {
+describe("Models /products", () => {
+  beforeEach(sinon.restore);
+
+  describe("getAll", () => {
     const responseDB = [
       [
         { id: 1, name: "Martelo de Thor" },
@@ -14,48 +16,49 @@ describe("testa se ao chamar com GET /products", () => {
       ],
       [],
     ]; 
-    before(async () => {
-      const execute = responseDB; // retorno esperado nesse teste
 
-       sinon.stub(connection, 'execute').resolves(execute);
-    });
-    after(async () => { 
-      connection.execute.restore();
-    })
-
-    
     it('se retorna todos os products corretamente', async () => {
+      sinon.stub(connection, "execute").resolves(responseDB);
+      // sinon.stub(productsModel, "getAll").resolves(responseDB);
       const getAllResponse = await productsModel.getAll()
       expect(getAllResponse).to.be.equal(responseDB[0]);
     })
   });
-  describe("testa se restorna apenas o produto que que é do respectivo id", () => {
-    const responseDB = [
-      [
-        { id: 1, name: "Martelo de Thor" },
-      ],
-      [],
-    ];
-    
-    before(async () => {
-      const execute = responseDB; // retorno esperado nesse teste
 
-      sinon.stub(connection, "execute").resolves(execute);
-    });
+  describe("findByid", () => {
+    const responseDB = [[{ id: 1, name: "Martelo de Thor" }], []];
 
-    after(async () => {
-      connection.execute.restore();
-    });
-    
-    
-    it("se retorna um array", async () => {
-      const getAllResponse = await productsModel.findById(1);
-      expect(getAllResponse).to.be.an("array");
-    });
-
-    it("se retorna o produto pelo id corretamente", async () => {
-      const getAllResponse = await productsModel.findById(1);
-      expect(getAllResponse).to.be.equal(responseDB[0]);
+    it("se retorna um array com o objecto correto", async () => {
+      sinon.stub(connection, "execute").resolves(responseDB);
+      // sinon.stub(productsModel, "findById").resolves(responseDB[0]);
+      const getByIdResponse = await productsModel.findById(1);
+      expect(getByIdResponse).to.be.an("array");
+      expect(getByIdResponse).to.be.equal(responseDB[0]);
     });
   });
+
+  describe("createproduct", () => {
+    const responseDBcreate = [{ insertId: 4}, []];
+    it("se retorna um objeto com as keys id e name", async () => {
+      sinon.stub(connection, "execute").resolves(responseDBcreate);
+      const createResponse = await productsModel.createProduct({
+        name: "cabelo do neymar",
+      });
+      expect(createResponse).to.be.keys("id", "name");
+      expect(createResponse.name).to.be.equal("cabelo do neymar");
+    });
+  });
+
+  describe("updateById", () => {
+    // const responseDBcreate = [{ insertId: 4 }, []];
+    it("retorna o novo produto.", async () => {
+      sinon.stub(connection, "execute").resolves();
+      const createResponse = await productsModel.updateById(1,{
+        name: "cabelo do neymar",
+      });
+      expect(createResponse).to.be.keys("id", "name");
+      expect(createResponse.name).to.be.equal("cabelo do neymar");
+    });
+  });
+
 });

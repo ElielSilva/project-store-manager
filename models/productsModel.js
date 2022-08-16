@@ -26,24 +26,27 @@ const createProduct = async (params) => {
 };
 
 const updateById = async (id, body) => {
-  const [products] = await connection.execute(
+  // const [products] =
+  await connection.execute(
     'UPDATE StoreManager.products SET name = ? WHERE id = ?;',
     [body.name, id],
   );
-  return products;
+  // console.log(products);
+  // return products;
+  return { id, name: body.name };
 };
 
-const deleteById = async (id) => {
-  await connection.execute(
-    'DELETE FROM StoreManager.products WHERE id = ?;',
-    [id],
-  );
-};
+// const deleteById = async (id) => {
+//   await connection.execute(
+//     'DELETE FROM StoreManager.products WHERE id = ?;',
+//     [id],
+//   );
+// };
 
 module.exports = {
   getAll,
   findById,
   createProduct,
   updateById,
-  deleteById,
+  // deleteById,
 };
