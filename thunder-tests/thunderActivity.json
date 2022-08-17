@@ -4,16 +4,16 @@
     "colId": "history",
     "containerId": "",
     "name": "http://localhost:3000/products",
-    "url": "http://localhost:3000/products",
+    "url": "http://localhost:3000/sales",
     "method": "POST",
     "sortNum": 0,
     "created": "2022-08-12T15:45:11.463Z",
-    "modified": "2022-08-12T17:20:49.598Z",
+    "modified": "2022-08-16T21:28:03.995Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"name\" : \"mad\"\n}",
+      "raw": "[\n  {\n    \"quatity\" : 3\n  }\n]",
       "form": []
     },
     "tests": []

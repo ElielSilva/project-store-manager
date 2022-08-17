@@ -65,13 +65,13 @@ describe('models / sales', () => {
       expect(result).to.be.eql(RESPONSE_GET_ALL_SALES)
     })
   })
-
+////
   describe("findByIdSales", () => {
-    it("returns sales speficificed", async () => {
-      sinon.stub(connection, "execute").resolves(RESPONSE_DB_FIND_BY_ID_SALES);
-      const result = await salesModel.findByIdSales();
-      expect(result).to.be.eql(RESPONSE_FIND_BY_ID_SALES);
-    });
+    // it("returns sales speficificed", async () => {
+    //   sinon.stub(connection, "execute").resolves(RESPONSE_DB_FIND_BY_ID_SALES);
+    //   const result = await salesModel.findByIdSales();
+    //   expect(result).to.be.eql(RESPONSE_FIND_BY_ID_SALES);
+    ////// });
     // it("returns a array empty if o ID is not found", async () => {
     //   sinon.stub(connection, "execute").resolves([]);
     //   const result = await salesModel.findByIdSales();

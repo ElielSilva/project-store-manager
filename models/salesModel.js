@@ -31,16 +31,24 @@ async function findByIdSales(id) {
   return sales.map(serialize);
 }
 
-// async function createSales({ product_id: { productId }, quantity }) {
-//   const [insertId] = await connection.execute(
-//     'INSERT INTO StoreManager.sales_products (product_id , quantity) VALUES (?,?);',
-//     [productId, quantity],
-//   );
-//   return insertId;
-// }
+async function createSales() {
+  const [{ insertId }] = await connection.execute(
+    'INSERT INTO StoreManager.sales () VALUES ();',
+  );
+  return insertId;
+}
+
+async function createSalesProducts(id, sale) {
+  const { productId, quantity } = sale;
+  await connection.execute(
+    'INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUES (?,?,?);',
+    [id, productId, quantity],
+  );
+}
 
 module.exports = {
   getAllSales,
   findByIdSales,
-  // createSales,
+  createSales,
+  createSalesProducts,
 };

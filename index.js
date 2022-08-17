@@ -17,7 +17,7 @@ app.put('/products/:id', rescue(productsController.updateById));
 
 app.delete('/products/:id', productsController.deleteById);
 
-// app.post('/sales', salesController.createSales);
+app.post('/sales', rescue(salesController.createSales));
 
 app.get('/sales', salesController.getAllSales);
 
