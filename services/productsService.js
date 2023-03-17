@@ -14,6 +14,18 @@ const findById = async (id) => {
   return { code: 200, data: result };
 };
 
+const findBySearch = async (q) => {
+  // console.log(q);
+  if (!q) {
+    const result = await productsModel.getAll();
+    return { code: 200, data: result };
+  }
+  
+  console.log('entrou');
+  const result = await productsModel.findBySearch(q);
+  return { code: 200, data: result };
+};
+
 async function createProduct(params) {
   const nameIsValid = validateInfo.validateName(params, validateInfo.schemaProductsName);
   if (nameIsValid.code) return { code: nameIsValid.code, message: nameIsValid.message };
@@ -33,7 +45,6 @@ const updateById = async (id, body) => {
 
 const deleteById = async (id) => {
   const produtExists = await findById(id);
-  // console.log(produtExists)
   if (produtExists.code === 404) return produtExists;
   await productsModel.deleteById(id);
   return { code: 204 };
@@ -45,4 +56,5 @@ module.exports = {
   createProduct,
   updateById,
   deleteById,
+  findBySearch,
 };

@@ -14,7 +14,8 @@ async function getAllSales() {
     INNER JOIN StoreManager.sales AS S
     ON SP.sale_id = S.id;`,
   ); 
-  return sales.map(serialize);
+  const result = sales.map(serialize);
+  return result;
 }
 
 async function findByIdSales(id) {
@@ -26,9 +27,8 @@ async function findByIdSales(id) {
     WHERE id = ?;`,
     [id],
   );
-  // console.log(sales);
-
-  return sales.map(serialize);
+  const result = sales.map(serialize);
+  return result;
 }
 
 async function createSales() {
@@ -46,9 +46,37 @@ async function createSalesProducts(id, sale) {
   );
 }
 
+async function deleteSales(id) {
+  const [result] = await connection.execute(
+    'SELECT * FROM StoreManager.sales WHERE id = ?;',
+    [id],
+  );
+  // console.log('exist', result.length > 0, result);
+  if (result.length === 0) {
+    return true;
+  }
+
+  await connection.execute(
+    'DELETE FROM StoreManager.sales_products WHERE sale_id = ?',
+    [id],
+  );
+ 
+  return false;
+}
+
+async function updateSalesProducts(id, sale) {
+  const { productId, quantity } = sale;
+  await connection.execute(
+    'UPDATE StoreManager.sales_products SET quantity = ? WHERE product_id =?  and sale_id = ?;',
+    [quantity, productId, id],
+  );
+}
+
 module.exports = {
   getAllSales,
   findByIdSales,
   createSales,
   createSalesProducts,
+  deleteSales,
+  updateSalesProducts,
 };

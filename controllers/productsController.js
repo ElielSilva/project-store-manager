@@ -2,7 +2,6 @@ const productsService = require('../services/productsService');
 
 async function getAll(req, res) {
   const { code, data } = await productsService.getAll();
-  // if (!data) return res.status(code).json(message);
   res.status(code).json(data);
 }
 
@@ -10,6 +9,14 @@ async function findById(req, res) {
   const { id } = req.params;
   const { code, message, data } = await productsService.findById(id);
   if (!data) return res.status(code).json({ message });
+  res.status(code).json(data);
+}
+
+async function findBySearch(req, res) {
+  const { q } = req.query;
+  console.log(req.query.q, q);
+  const { code, data } = await productsService.findBySearch(q);
+  // if (!data) return res.status(code).json({ message });
   res.status(code).json(data);
 }
 
@@ -39,4 +46,5 @@ module.exports = {
   createProduct,
   updateById,
   deleteById,
+  findBySearch,
 };

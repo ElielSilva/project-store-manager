@@ -4,7 +4,6 @@ const validateSales = require('../helpers/validateBodySales');
 const productsService = require('./productsService');
 
 function funcSalesIsvalid(sales) {
-  // console.log(sales)
   if (!sales) return false;
   const salesIsvalid = sales.reduce((acc, curr) => {
     const x = validateSales.validatePropety(curr, validateSales.schemaSales);
@@ -16,7 +15,6 @@ function funcSalesIsvalid(sales) {
 
 async function funcProductsNotfound(sales) {
   const { data } = await productsService.getAll();
-  // console.log(data);
   const newAllProducts = data.map((item) => item.id); // 1 2 3
   const b = sales
     .map((item) => newAllProducts.includes(item.productId))
@@ -37,16 +35,10 @@ async function findByIdSales(id) {
 }
 
 async function createSales(sales) {
-  // console.log(sales)
   const salesIsvalid = funcSalesIsvalid(sales);
   if (salesIsvalid[0]) return salesIsvalid[0];
 
   const productsNotfound = await funcProductsNotfound(sales);
-  // const productsNotfound = sales.reduce((acc, curr) => {
-  //   if (curr.productId <= x.length) acc.push(true);
-  //   return acc;
-  // }, []);
-  // console.log('meu console ======== ', productsNotfound);
   if (!productsNotfound) return { code: 404, message: 'Product not found' };
   
   const insertId = await salesModel.createSales();
@@ -57,44 +49,32 @@ async function createSales(sales) {
   return { code: 201, data: { id: insertId, itemsSold: sales } };
 }
 
+async function deleteSales(id) {
+  const sales = await salesModel.deleteSales(id);
+  if (sales) return { code: 404, message: 'Sale not found' };
+  return { code: 204 };
+}
+
+async function updateSales(Id, sales) {
+  const salesIsvalid = funcSalesIsvalid(sales);
+  if (salesIsvalid[0]) return salesIsvalid[0];
+
+  const productsNotfound = await funcProductsNotfound(sales);
+  if (!productsNotfound) return { code: 404, message: 'Product not found' };
+  
+  const salesExists = await salesModel.findByIdSales(Id);
+  if (!salesExists.length) return { code: 404, message: 'Sale not found' };
+
+  Promise.all(
+    sales.map(async (sale) => salesModel.updateSalesProducts(Id, sale)),
+  ); 
+  return { code: 200, data: { saleId: Id, itemsUpdated: sales } };
+}
+
 module.exports = {
   getAllSales,
   findByIdSales,
   createSales,
+  deleteSales,
+  updateSales,
 };
-
-// for (const sale of sales) {
-  //   const salesIsvalid = validateSales.validatePropety(sale, validateSales.schemaSales);
-  //   console.log(salesIsvalid);
-  //   if (salesIsvalid.code) return salesIsvalid;
-  // }
-  // sales.forEach((sale) => {
-  //   const salesIsvalid = validateSales.validatePropety(sale, validateSales.schemaSales);
-  //   console.log(salesIsvalid);
-  //   if (salesIsvalid.code) return salesIsvalid;
-  // });
-
-  // findByIdSales
-  // const result = await salesModel.createSales(sales);
-  // return { code: 201, data: result };
-
-  // for (let index = 0; index < sales.length; index += 1) {
-  //   const salesIsvalid = validateSales.validatePropety(
-  //     sales[index],
-  //     validateSales.schemaSales,
-  //   );
-  //   if (salesIsvalid.code) return salesIsvalid;
-  // }
-
-  // async function productsExists(id) {
-  //   const result = await productsService.findById(id);
-  //   if (result.code === 404) return true;
-  // }
-  // const productsNotfound = sales.map((sale) => productsExists(sale.productId));
-  // if (productsNotfound.includes(true)) return { code: 123, message: 'Product not found' }; 
-  //   for (let index = 0; index < sales.length; index += 1) {
-  //   const salesExists = productsExists(sales[index].productId);
-  //   if (salesExists.code !== 200) return salesExists
-  // }
-  // const result = await salesModel.createSales(sales);
-  // return { code: 201, data: result }

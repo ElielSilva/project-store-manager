@@ -15,6 +15,14 @@ const findById = async (id) => {
   return products;
 };
 
+const findBySearch = async (q) => {
+  const products = await getAll();
+  const filterQueryInProduct = products.filter(
+    (product) => product.name.includes(q),
+  );
+  return filterQueryInProduct;
+};
+
 const createProduct = async (params) => {
   const [{ insertId }] = await connection.execute(
     'INSERT INTO StoreManager.products (name) VALUES (?);',
@@ -47,4 +55,5 @@ module.exports = {
   createProduct,
   updateById,
   deleteById,
+  findBySearch,
 };

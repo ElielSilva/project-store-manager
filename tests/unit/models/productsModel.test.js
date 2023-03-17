@@ -8,7 +8,7 @@ describe("Models /products", () => {
   beforeEach(sinon.restore);
 
   describe("getAll", () => {
-    const responseDB = [
+    const responseDBAll = [
       [
         { id: 1, name: "Martelo de Thor" },
         { id: 2, name: "Traje de encolhimento" },
@@ -18,22 +18,37 @@ describe("Models /products", () => {
     ]; 
 
     it('se retorna todos os products corretamente', async () => {
-      sinon.stub(connection, "execute").resolves(responseDB);
+      sinon.stub(connection, "execute").resolves(responseDBAll);
       // sinon.stub(productsModel, "getAll").resolves(responseDB);
       const getAllResponse = await productsModel.getAll()
-      expect(getAllResponse).to.be.equal(responseDB[0]);
+      expect(getAllResponse).to.be.equal(responseDBAll[0]);
     })
   });
 
   describe("findByid", () => {
-    const responseDB = [[{ id: 1, name: "Martelo de Thor" }], []];
+    const responseDBid = [[{ id: 1, name: "Martelo de Thor" }], []];
 
     it("se retorna um array com o objecto correto", async () => {
-      sinon.stub(connection, "execute").resolves(responseDB);
+      sinon.stub(connection, "execute").resolves(responseDBid);
       // sinon.stub(productsModel, "findById").resolves(responseDB[0]);
       const getByIdResponse = await productsModel.findById(1);
       expect(getByIdResponse).to.be.an("array");
-      expect(getByIdResponse).to.be.equal(responseDB[0]);
+      expect(getByIdResponse).to.be.equal(responseDBid[0]);
+    });
+  });
+
+  describe("findBySearch", () => {
+    const responseDBSearch = [[
+      { id: 1, name: "Martelo de Thor" },
+      { id: 2, name: "Traje de encolhimento" },
+    ], []];
+
+    it("se retorna um array com o objecto correto", async () => {
+      sinon.stub(connection, "execute").resolves(responseDBSearch);
+      // sinon.stub(productsModel, "findById").resolves(responseDB[0]);
+      const getByIdResponse = await productsModel.findBySearch('de');
+      expect(getByIdResponse).to.be.an("array");
+      expect(getByIdResponse).to.deep.equal(responseDBSearch[0]);
     });
   });
 

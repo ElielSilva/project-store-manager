@@ -40,5 +40,18 @@ describe("Service /products", () => {
       expect(result).to.be.eql({ code: 404, message: "Sale not found" });
     });
   });
+
+  describe("createSales", () => {
+    it("getAllSales retorns all correct", async () => {
+      sinon
+        .stub(salesModel, "createSales")
+        .resolves(variables.RESPONSE_MODEL_GET_ALL_SALES);
+      const result = await salesService.getAllSales();
+      expect(result).to.be.eql({
+        code: 200,
+        data: variables.RESPONSE_MODEL_GET_ALL_SALES,
+      });
+    });
+  });
 });
 
